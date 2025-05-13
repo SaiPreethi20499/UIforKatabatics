@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTGAN Model | Katabatic</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/CTGAN.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('home') }}"><h2>Katabatic</h2></a>
+        </div>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About us</a>
+            <a href="{{ url_for('services') }}">Services</a>
+            <a href="{{ url_for('Contact') }}">Contact Us</a>
+        </nav>
+    </header>
+
+    <main class="model-main">
+        <div class="model-header">
+            <h1>CTGAN Model</h1>
+            <p class="model-description">Conditional Tabular Generative Adversarial Network for high-quality synthetic data generation</p>
+        </div>
+
+        <div class="model-content">
+            <div class="model-info">
+                <div class="info-card">
+                    <h3>About CTGAN</h3>
+                    <p>CTGAN is a GAN-based framework for generating synthetic tabular data with high fidelity. It handles both continuous and categorical variables and preserves correlations between columns.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>How It Works</h3>
+                    <ol>
+                        <li>Upload your dataset (CSV or JSON)</li>
+                        <li>Configure generation parameters</li>
+                        <li>Generate synthetic data</li>
+                        <li>Download or compare results</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="model-interface">
+                <div class="parameter-section">
+                    <h3>Generation Parameters</h3>
+                    <form id="generation-form">
+                        <div class="form-group">
+                            <label for="epochs">Training Epochs</label>
+                            <input type="range" id="epochs" min="50" max="500" value="100" step="50">
+                            <span class="value-display" id="epochs-value">100</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="batch-size">Batch Size</label>
+                            <select id="batch-size">
+                                <option value="64">64</option>
+                                <option value="128" selected>128</option>
+                                <option value="256">256</option>
+                                <option value="512">512</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="custom-button generate-btn">
+                            <i class="fas fa-magic"></i> Generate Data
+                        </button>
+                    </form>
+                </div>
+
+                <div class="results-section">
+                    <div class="results-placeholder">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>Your generated data will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="{{ url_for('home') }}" class="custom-button secondary">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <button class="custom-button" disabled id="download-btn">
+                <i class="fas fa-download"></i> Download Results
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Katabatic. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const epochsSlider = document.getElementById('epochs');
+        const epochsValue = document.getElementById('epochs-value');
+        
+        epochsSlider.addEventListener('input', function() {
+            epochsValue.textContent = this.value;
+        });
+
+        document.getElementById('generation-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const generateBtn = document.querySelector('.generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            generateBtn.disabled = true;
+            
+            setTimeout(() => {
+                generateBtn.innerHTML = '<i class="fas fa-check"></i> Generation Complete';
+                downloadBtn.disabled = false;
+                
+                
+                const resultsSection = document.querySelector('.results-section');
+                resultsSection.innerHTML = `
+                    <div class="generation-success">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Data Generated Successfully!</h3>
+                        <p>Your synthetic dataset is ready for download or analysis.</p>
+                        <div class="stats">
+                            <div class="stat">
+                                <span class="stat-value">1,024</span>
+                                <span class="stat-label">Rows Generated</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">12</span>
+                                <span class="stat-label">Columns</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">98.7%</span>
+                                <span class="stat-label">Fidelity Score</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
